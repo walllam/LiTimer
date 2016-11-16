@@ -48,7 +48,7 @@ func saveToFile(logtext string) {
 	var err error
 	if logfile == nil {
 		filename := "./run.log"
-		logfile, err = os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+		logfile, err = os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, os.ModeAppend)
 		if err != nil {
 			fmt.Printf("error: %s\n", err.Error())
 			return

@@ -21,16 +21,16 @@ import (
 */
 
 func main() {
+	iniFile := filepath.Dir(os.Args[0]) + "/timer.ini"
 	if len(os.Args) == 1 {
 		// 启动守护进程
-		configFile, _ := filepath.Abs("./timer.ini")
-		_, err := os.Stat(configFile)
+		_, err := os.Stat(iniFile)
 		if err != nil && os.IsNotExist(err) {
-			fmt.Println("Not Exist Config File:", configFile)
+			fmt.Println("Not Exist Config File:", iniFile)
 			return
 		}
-
-		cmd := exec.Command(os.Args[0], configFile)
+		
+		cmd := exec.Command(os.Args[0], "daemon")
 		cmd.Stdin = nil
 		cmd.Stdout = nil
 		cmd.Stderr = nil
@@ -39,9 +39,9 @@ func main() {
 		return
 	}
 
-	cfg, err := ini.Load(os.Args[1])
+	cfg, err := ini.Load(iniFile)
 	if err != nil {
-		logic.Addlog("timer.ini load error")
+		logic.Addlog("load error:"+iniFile)
 	}
 
 	logic.TimeZoneSet = cfg.Section("Timezone").Key("default").String()
